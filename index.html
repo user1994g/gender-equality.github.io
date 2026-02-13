@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equality Archive — A Global Perspective</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="reading-progress" aria-hidden="true"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-container">
+            <a href="#top" class="nav-logo">
+                <span class="logo-main">Equality</span>
+                <span class="logo-sub">Archive</span>
+            </a>
+            <div class="nav-menu">
+                <a href="#story" class="nav-link">Our Story</a>
+                <a href="#progress" class="nav-link">Global Progress</a>
+                <a href="#safety" class="nav-link">Safety Guide</a>
+                <a href="#action" class="nav-link">Take Action</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero" id="top">
+        <div class="hero-content">
+            <div class="hero-label">Est. 2026 — Global Documentation Project</div>
+            <h1 class="hero-title">
+                <span class="title-line">The Journey</span>
+                <span class="title-line">Toward</span>
+                <span class="title-line title-line--accent">Equality</span>
+            </h1>
+            <p class="hero-subtitle">A comprehensive look at gender equality and LGBTQ+ rights across the world — where we've been, where we are, and where we're going.</p>
+            <div class="hero-cta">
+                <a href="#story" class="btn btn-primary">Explore the Journey</a>
+                <a href="#safety" class="btn btn-secondary">View Safety Guide</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="visual-grid">
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+                <div class="grid-item"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Introduction -->
+    <section class="intro-section">
+        <div class="container">
+            <div class="intro-quote">
+                <p>"The arc of the moral universe is long, but it bends toward justice."</p>
+                <cite>— Dr. Martin Luther King Jr.</cite>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story-section" id="story">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <h2 class="section-title">The Ongoing Struggle</h2>
+            </div>
+            
+            <div class="story-grid">
+                <div class="story-content">
+                    <div class="story-text">
+                        <h3>A Century of Progress</h3>
+                        <p class="lead-text">For over a century, the fight for equality has transformed societies, challenged norms, and redefined what it means to be human in the modern world.</p>
+                        <p>From the suffragette movements of the early 1900s to today's global advocacy for LGBTQ+ rights and gender equality, millions have fought for the simple right to exist, to vote, to work, and to love freely.</p>
+                        <p>Yet in 2026, the journey continues. While some nations have made remarkable strides, others still have significant progress to make. This archive documents where we stand today.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-wrapper">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-year">1893</div>
+                            <div class="timeline-content">
+                                <h4>First Suffrage Victory</h4>
+                                <p>New Zealand becomes the first nation to grant women the right to vote</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1920</div>
+                            <div class="timeline-content">
+                                <h4>19th Amendment</h4>
+                                <p>United States women gain voting rights after decades of activism</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">1979</div>
+                            <div class="timeline-content">
+                                <h4>CEDAW Treaty</h4>
+                                <p>UN adopts Convention on the Elimination of All Forms of Discrimination Against Women</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2001</div>
+                            <div class="timeline-content">
+                                <h4>Marriage Equality</h4>
+                                <p>Netherlands becomes first country to legalize same-sex marriage</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-year">2026</div>
+                            <div class="timeline-content">
+                                <h4>The Journey Continues</h4>
+                                <p>Ongoing progress toward true equality for all people, everywhere</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">31%</div>
+                    <div class="stat-label">Senior Management Positions Held by Women Globally</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">77¢</div>
+                    <div class="stat-label">Women Earn for Every Dollar Men Earn Worldwide</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">130M</div>
+                    <div class="stat-label">Girls Denied Access to Education Globally</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">26.7%</div>
+                    <div class="stat-label">Technology Roles Held by Women</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Progress Section -->
+    <section class="progress-section" id="progress">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <h2 class="section-title">Global Leaders in Equality</h2>
+                <p class="section-subtitle">Countries making significant progress toward gender equality</p>
+            </div>
+
+            <div class="champions-grid">
+                <div class="champion-card rank-1">
+                    <div class="champion-rank">1</div>
+                    <div class="champion-flag">🇮🇸</div>
+                    <h3 class="champion-name">Iceland</h3>
+                    <div class="champion-score">91.2%</div>
+                    <p class="champion-desc">Leading the world for 14 consecutive years. First country to make pay equality legally enforceable.</p>
+                    <div class="champion-stats">
+                        <div class="mini-stat">
+                            <span class="stat-label">Pay Gap</span>
+                            <span class="stat-value">4%</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="stat-label">Political Power</span>
+                            <span class="stat-value">48%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="champion-card rank-2">
+                    <div class="champion-rank">2</div>
+                    <div class="champion-flag">🇫🇮</div>
+                    <h3 class="champion-name">Finland</h3>
+                    <div class="champion-score">86.3%</div>
+                    <p class="champion-desc">One of the first nations with a female president. Strong parental leave policies and workplace equality.</p>
+                    <div class="champion-stats">
+                        <div class="mini-stat">
+                            <span class="stat-label">Pay Gap</span>
+                            <span class="stat-value">7%</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="stat-label">Political Power</span>
+                            <span class="stat-value">47%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="champion-card rank-3">
+                    <div class="champion-rank">3</div>
+                    <div class="champion-flag">🇳🇴</div>
+                    <h3 class="champion-name">Norway</h3>
+                    <div class="champion-score">84.5%</div>
+                    <p class="champion-desc">Pioneering gender quotas for corporate boards. Excellent work-life balance policies.</p>
+                    <div class="champion-stats">
+                        <div class="mini-stat">
+                            <span class="stat-label">Pay Gap</span>
+                            <span class="stat-value">6%</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="stat-label">Political Power</span>
+                            <span class="stat-value">47%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="champion-card rank-4">
+                    <div class="champion-rank">4</div>
+                    <div class="champion-flag">🇳🇿</div>
+                    <h3 class="champion-name">New Zealand</h3>
+                    <div class="champion-score">84.1%</div>
+                    <p class="champion-desc">First to grant women voting rights. Strong representation in leadership and politics.</p>
+                    <div class="champion-stats">
+                        <div class="mini-stat">
+                            <span class="stat-label">Pay Gap</span>
+                            <span class="stat-value">9%</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="stat-label">Political Power</span>
+                            <span class="stat-value">49%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="champion-card rank-5">
+                    <div class="champion-rank">5</div>
+                    <div class="champion-flag">🇸🇪</div>
+                    <h3 class="champion-name">Sweden</h3>
+                    <div class="champion-score">81.5%</div>
+                    <p class="champion-desc">Pioneering gender-neutral policies. High female workforce participation.</p>
+                    <div class="champion-stats">
+                        <div class="mini-stat">
+                            <span class="stat-label">Pay Gap</span>
+                            <span class="stat-value">11%</span>
+                        </div>
+                        <div class="mini-stat">
+                            <span class="stat-label">Political Power</span>
+                            <span class="stat-value">46%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="champion-card needs-work">
+                    <div class="champion-rank">!</div>
+                    <h3 class="champion-name">Areas Needing Progress</h3>
+                    <p class="champion-desc">Many countries continue to face significant challenges in achieving gender equality:</p>
+                    <ul class="challenge-list">
+                        <li><strong>Afghanistan</strong> — Women's rights severely restricted under Taliban rule</li>
+                        <li><strong>Yemen</strong> — 49.2% score, lowest globally</li>
+                        <li><strong>Pakistan</strong> — 56.4%, significant gaps in education access</li>
+                        <li><strong>Iraq</strong> — 53.1%, limited political participation for women</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Safety Map Section -->
+    <section class="safety-section" id="safety">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <h2 class="section-title">LGBTQ+ Safety Guide</h2>
+                <p class="section-subtitle">Understanding legal protections and risks around the world</p>
+            </div>
+
+            <div class="map-legend">
+                <div class="legend-item">
+                    <span class="legend-dot safe"></span>
+                    <span>Safe — Full legal protections</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot moderate"></span>
+                    <span>Moderate — Some protections</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot caution"></span>
+                    <span>Caution — Limited rights</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot danger"></span>
+                    <span>Danger — Criminalized/Persecuted</span>
+                </div>
+            </div>
+
+            <div class="map-container">
+                <div id="safety-map"></div>
+            </div>
+
+            <div class="safety-info-grid">
+                <div class="info-card safe-card">
+                    <div class="card-icon">✓</div>
+                    <h3>Safe Havens</h3>
+                    <p class="card-intro">Countries with comprehensive legal protections and anti-discrimination laws:</p>
+                    <ul>
+                        <li><strong>Canada</strong> — Full equality and constitutional protections</li>
+                        <li><strong>Netherlands</strong> — First to legalize same-sex marriage (2001)</li>
+                        <li><strong>Spain</strong> — Strong anti-discrimination framework</li>
+                        <li><strong>Germany</strong> — Comprehensive legal protections</li>
+                        <li><strong>United Kingdom</strong> — Legal recognition and protection</li>
+                        <li><strong>New Zealand</strong> — Progressive rights framework</li>
+                    </ul>
+                </div>
+
+                <div class="info-card danger-card">
+                    <div class="card-icon">⚠</div>
+                    <h3>Extreme Caution Required</h3>
+                    <p class="card-intro">Countries where LGBTQ+ individuals face severe persecution, including potential death penalty:</p>
+                    <ul>
+                        <li><strong>Iran</strong> — Death penalty actively enforced</li>
+                        <li><strong>Saudi Arabia</strong> — Death penalty possible under Sharia law</li>
+                        <li><strong>Yemen</strong> — Death penalty possible</li>
+                        <li><strong>Afghanistan</strong> — Death penalty under Taliban rule</li>
+                        <li><strong>Somalia</strong> — Death penalty in some regions</li>
+                        <li><strong>Nigeria</strong> — Up to 14 years imprisonment (life in some states)</li>
+                    </ul>
+                    <div class="emergency-note">
+                        <strong>Emergency Resources:</strong> If you're in danger, contact local LGBTQ+ organizations, international human rights groups, or your embassy immediately.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Action Section -->
+    <section class="action-section" id="action">
+        <div class="container">
+            <div class="action-content">
+                <h2 class="action-title">The Journey Continues</h2>
+                <p class="action-text">Equality is not a destination—it's a continuous journey that requires the courage and commitment of every generation.</p>
+                <p class="action-text">Whether it's gender equality, LGBTQ+ rights, or basic human dignity, the fight continues until everyone, everywhere, can live freely and equally.</p>
+                
+                <div class="action-quote">
+                    <blockquote>
+                        <p>"We realize the importance of our voices only when we are silenced."</p>
+                        <cite>— Malala Yousafzai</cite>
+                    </blockquote>
+                </div>
+
+                <div class="action-grid">
+                    <div class="action-card">
+                        <h3>Learn</h3>
+                        <ul>
+                            <li>Understand pay gaps and representation issues</li>
+                            <li>Know local laws and safety resources</li>
+                            <li>Support evidence-based policy changes</li>
+                            <li>Educate yourself on intersectionality</li>
+                        </ul>
+                    </div>
+                    <div class="action-card">
+                        <h3>Act</h3>
+                        <ul>
+                            <li>Volunteer with local organizations</li>
+                            <li>Support advocacy and legal defense groups</li>
+                            <li>Amplify marginalized voices</li>
+                            <li>Advocate for policy changes</li>
+                        </ul>
+                    </div>
+                    <div class="action-card">
+                        <h3>Connect</h3>
+                        <ul>
+                            <li>Join community organizations</li>
+                            <li>Attend rallies and peaceful protests</li>
+                            <li>Build solidarity networks</li>
+                            <li>Share resources and knowledge</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-large" id="join-movement">Get Involved</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <span class="logo-main">Equality</span>
+                        <span class="logo-sub">Archive</span>
+                    </div>
+                    <p>Independent Documentation Project</p>
+                </div>
+                <div class="footer-info">
+                    <p>© 2026 Equality Archive. All rights reserved.</p>
+                    <p class="footer-note">Data compiled from UN Women, World Economic Forum, ILGA World, and Human Rights Watch</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="movement-modal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" aria-label="Close modal">×</button>
+            <h3 class="modal-title">Join the Movement</h3>
+            <p class="modal-subtitle">This is a demonstration experience. In a real-world implementation, this would connect you with verified organizations and resources.</p>
+            <div class="modal-grid">
+                <div class="modal-card">
+                    <h4>Educational Resources</h4>
+                    <p>Access comprehensive guides, research papers, and educational materials about equality movements worldwide.</p>
+                </div>
+                <div class="modal-card">
+                    <h4>Advocacy Networks</h4>
+                    <p>Connect with local and international organizations working toward equality and human rights.</p>
+                </div>
+                <div class="modal-card">
+                    <h4>Support Services</h4>
+                    <p>Find mental health resources, legal aid, and community support services in your area.</p>
+                </div>
+            </div>
+            <button class="btn btn-primary" id="close-modal">Continue Exploring</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
