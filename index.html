@@ -4,17 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A comprehensive global perspective on gender equality and LGBTQ+ rights - documenting progress, safety, and the ongoing journey toward equality.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="author" content="Jack Miller">
+    <meta name="keywords" content="gender equality, LGBTQ+ rights, global equality, human rights, equality archive, women rights">
     <meta name="theme-color" content="#2C5F2D">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="Equality Archive — A Global Perspective">
+    <meta property="og:description" content="A comprehensive global perspective on gender equality and LGBTQ+ rights - documenting progress, safety, and the ongoing journey toward equality.">
+    <meta property="og:site_name" content="Equality Archive">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Equality Archive — A Global Perspective">
+    <meta name="twitter:description" content="A comprehensive global perspective on gender equality and LGBTQ+ rights - documenting progress, safety, and the ongoing journey toward equality.">
+    <link rel="canonical" href="./">
     <title>Equality Archive — A Global Perspective</title>
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "WebSite",
+                    "name": "Equality Archive",
+                    "description": "A comprehensive global perspective on gender equality and LGBTQ+ rights.",
+                    "inLanguage": "en"
+                },
+                {
+                    "@type": "WebPage",
+                    "name": "Equality Archive — A Global Perspective",
+                    "description": "A comprehensive global perspective on gender equality and LGBTQ+ rights - documenting progress, safety, and the ongoing journey toward equality.",
+                    "dateModified": "2026-02-15",
+                    "about": [
+                        { "@type": "Thing", "name": "Gender Equality" },
+                        { "@type": "Thing", "name": "LGBTQ+ Rights" },
+                        { "@type": "Thing", "name": "Human Rights" }
+                    ]
+                }
+            ]
+        }
+    </script>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="//unpkg.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Leaflet Map -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
+
     <!--Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -96,7 +131,7 @@
 	        <section class="video-section" id="video">
 	            <div class="container">
 	                <div class="video-wrapper">
-	                    <video controls class="video-player">
+	                    <video controls class="video-player" preload="metadata" playsinline>
 	                        <source src="videos/gender equality.mp4" type="video/mp4">
 	                        Your browser does not support the video element.
 	                    </video>
@@ -484,7 +519,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
