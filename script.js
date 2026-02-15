@@ -30,17 +30,46 @@ const throttle = (func, limit = 250) => {
   };
 };
 
+const loadExternalScript = (src) => {
+  if (document.querySelector(`script[src="${src}"]`)) return Promise.resolve();
+
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+    document.head.appendChild(script);
+  });
+};
+
+const loadExternalStylesheet = (href) => {
+  if (document.querySelector(`link[href="${href}"]`)) return Promise.resolve();
+
+  return new Promise((resolve, reject) => {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    link.onload = () => resolve();
+    link.onerror = () => reject(new Error(`Failed to load stylesheet: ${href}`));
+    document.head.appendChild(link);
+  });
+};
+
+const SCROLL_EVENT_OPTIONS = { passive: true };
+
 // ==========================
 // PROGRESS BAR
 // ==========================
 class ProgressBar {
   constructor(element) {
     this.element = element;
+    if (!this.element) return;
     this.init();
   }
 
   init() {
-    window.addEventListener('scroll', throttle(() => this.update(), 100));
+    window.addEventListener('scroll', throttle(() => this.update(), 100), SCROLL_EVENT_OPTIONS);
     this.update();
   }
 
@@ -48,7 +77,8 @@ class ProgressBar {
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const progress = (scrollTop / (documentHeight - windowHeight)) * 100;
+    const maxScrollableDistance = Math.max(documentHeight - windowHeight, 1);
+    const progress = (scrollTop / maxScrollableDistance) * 100;
     
     this.element.style.width = `${Math.min(progress, 100)}%`;
     this.element.setAttribute('aria-valuenow', Math.floor(progress));
@@ -70,13 +100,15 @@ class Navigation {
   }
 
   init() {
+    if (!this.nav) return;
+
     this.toggle?.addEventListener('click', () => this.toggleMenu());
     this.links.forEach(link => {
       link.addEventListener('click', (e) => this.handleLinkClick(e, link));
     });
     
-    window.addEventListener('scroll', throttle(() => this.handleScroll(), 100));
-    window.addEventListener('scroll', debounce(() => this.updateActiveLink(), 100));
+    window.addEventListener('scroll', throttle(() => this.handleScroll(), 100), SCROLL_EVENT_OPTIONS);
+    window.addEventListener('scroll', debounce(() => this.updateActiveLink(), 100), SCROLL_EVENT_OPTIONS);
   }
 
   toggleMenu() {
@@ -162,16 +194,26 @@ class ScrollAnimator {
   }
 
   init() {
+    const elements = selectAll('.section-header, .stat-card, .champion, .timeline__item, .info-card, .action-card');
+    if (elements.length === 0) return;
+
+    if (!('IntersectionObserver' in window)) {
+      elements.forEach((el) => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+      return;
+    }
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.style.opacity = '1';
           entry.target.style.transform = 'translateY(0)';
+          observer.unobserve(entry.target);
         }
       });
     }, this.options);
-
-    const elements = selectAll('.section-header, .stat-card, .champion, .timeline__item, .info-card, .action-card');
     
     elements.forEach(el => {
       el.style.opacity = '0';
@@ -191,6 +233,20 @@ class StatsCounter {
   }
 
   init() {
+    const cards = selectAll('.stat-card');
+    if (cards.length === 0) return;
+
+    if (!('IntersectionObserver' in window)) {
+      cards.forEach((card) => {
+        const numberElement = select('.stat-card__number', card);
+        if (numberElement && !numberElement.dataset.animated) {
+          this.animateNumber(numberElement);
+          numberElement.dataset.animated = 'true';
+        }
+      });
+      return;
+    }
+
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -204,29 +260,42 @@ class StatsCounter {
       });
     }, { threshold: 0.5 });
 
-    selectAll('.stat-card').forEach(card => observer.observe(card));
+    cards.forEach(card => observer.observe(card));
   }
 
   animateNumber(element) {
     const text = element.textContent.trim();
-    const suffix = text.match(/[%¢M]/)?.[0] || '';
-    const target = parseInt(text);
-    
-    if (isNaN(target)) return;
-    
+    const numericMatch = text.match(/[\d,.]+/);
+    if (!numericMatch) return;
+
+    const numericText = numericMatch[0].replace(/,/g, '');
+    const target = Number.parseFloat(numericText);
+    if (!Number.isFinite(target)) return;
+
+    const decimals = numericText.includes('.') ? numericText.split('.')[1].length : 0;
+    const prefix = text.slice(0, numericMatch.index);
+    const suffix = text.slice((numericMatch.index ?? 0) + numericMatch[0].length);
     const duration = 2000;
-    const increment = target / (duration / 16);
-    let current = 0;
-    
-    const timer = setInterval(() => {
-      current += increment;
-      if (current >= target) {
-        element.textContent = target + suffix;
-        clearInterval(timer);
-      } else {
-        element.textContent = Math.floor(current) + suffix;
+    const startTime = performance.now();
+
+    const tick = (time) => {
+      const progress = Math.min((time - startTime) / duration, 1);
+      const currentValue = target * progress;
+      const formattedValue = decimals > 0
+        ? currentValue.toFixed(decimals)
+        : Math.floor(currentValue).toString();
+
+      element.textContent = `${prefix}${formattedValue}${suffix}`;
+
+      if (progress < 1) {
+        requestAnimationFrame(tick);
+        return;
       }
-    }, 16);
+
+      element.textContent = `${prefix}${target.toFixed(decimals)}${suffix}`;
+    };
+
+    requestAnimationFrame(tick);
   }
 }
 
@@ -236,12 +305,51 @@ class StatsCounter {
 class SafetyMap {
   constructor() {
     this.mapElement = select('#safety-map');
-    if (!this.mapElement || typeof L === 'undefined') return;
+    this.section = select('#safety');
+    this.hasInitialized = false;
+    if (!this.mapElement || !this.section) return;
     
     this.init();
   }
 
   init() {
+    if (!('IntersectionObserver' in window)) {
+      this.loadAndInitializeMap();
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          observer.unobserve(entry.target);
+          this.loadAndInitializeMap();
+        }
+      });
+    }, { rootMargin: '300px 0px', threshold: 0.01 });
+
+    observer.observe(this.section);
+  }
+
+  async loadAndInitializeMap() {
+    if (this.hasInitialized) return;
+    this.hasInitialized = true;
+
+    try {
+      if (typeof L === 'undefined') {
+        await Promise.all([
+          loadExternalStylesheet('https://unpkg.com/leaflet@1.9.4/dist/leaflet.css'),
+          loadExternalScript('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js')
+        ]);
+      }
+
+      if (typeof L === 'undefined') return;
+      this.initializeMap();
+    } catch (error) {
+      console.error('Unable to load safety map assets.', error);
+    }
+  }
+
+  initializeMap() {
     // Initialize map
     this.map = L.map('safety-map', {
       center: [20, 0],
@@ -342,6 +450,7 @@ class Modal {
     this.closeBtn = select('#modal-close');
     this.closeX = select('.modal__close');
     this.overlay = select('.modal__overlay');
+    this.focusTrapHandler = null;
     
     this.init();
   }
@@ -370,6 +479,10 @@ class Modal {
   close() {
     this.modal.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
+    if (this.focusTrapHandler) {
+      this.modal.removeEventListener('keydown', this.focusTrapHandler);
+      this.focusTrapHandler = null;
+    }
     this.openBtn?.focus();
   }
 
@@ -378,11 +491,12 @@ class Modal {
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       this.modal
     );
+    if (focusable.length === 0) return;
     
     const first = focusable[0];
     const last = focusable[focusable.length - 1];
     
-    const handleTab = (e) => {
+    this.focusTrapHandler = (e) => {
       if (e.key !== 'Tab') return;
       
       if (e.shiftKey && document.activeElement === first) {
@@ -394,7 +508,7 @@ class Modal {
       }
     };
     
-    this.modal.addEventListener('keydown', handleTab);
+    this.modal.addEventListener('keydown', this.focusTrapHandler);
   }
 }
 
@@ -407,7 +521,7 @@ class SmoothScroll {
   }
 
   init() {
-    selectAll('a[href^="#"]').forEach(anchor => {
+    selectAll('a[href^="#"]:not(.nav__link):not(.skip-link)').forEach(anchor => {
       anchor.addEventListener('click', (e) => {
         const href = anchor.getAttribute('href');
         
@@ -503,37 +617,26 @@ class App {
   }
 
   initializeComponents() {
-    // Initialize all components
+    // Initialize critical components first
     new ProgressBar(select('.progress-bar'));
     new Navigation();
     new ScrollAnimator();
     new StatsCounter();
-    new SafetyMap();
     new Modal();
     new SmoothScroll();
     new VideoLauncher();
     new PerformanceOptimizer();
+
+    // Defer map setup until browser idle time
+    const initializeDeferred = () => new SafetyMap();
+    if ('requestIdleCallback' in window) {
+      requestIdleCallback(initializeDeferred, { timeout: 1500 });
+    } else {
+      setTimeout(initializeDeferred, 1);
+    }
     
     // Add loaded class for CSS
     document.body.classList.add('loaded');
-    
-    // Console message
-    this.logWelcomeMessage();
-  }
-
-  logWelcomeMessage() {
-    console.log(
-      '%c✨ Equality Archive',
-      'font-size: 24px; font-weight: bold; color: #2C5F2D; font-family: "Playfair Display", serif;'
-    );
-    console.log(
-      '%cA modern, accessible website documenting the journey toward global equality.',
-      'font-size: 12px; color: #4A4A4A; font-family: Inter, sans-serif;'
-    );
-    console.log(
-      '%cBuilt with care, designed for all.',
-      'font-size: 12px; color: #D4A574; font-family: Inter, sans-serif; font-style: italic;'
-    );
   }
 }
 
